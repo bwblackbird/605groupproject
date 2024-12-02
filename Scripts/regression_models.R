@@ -1,7 +1,8 @@
 # regression_models.R: Regression Models for Student Exam Performance
 
 # Libraries, data
-library(car)
+library("car")
+library("MASS")
 data <- read.csv("Data/data.csv", header=TRUE, sep=",")
 
 # Random training sample using 80% of data
@@ -27,11 +28,27 @@ vif(m1)
 m2_formula <- Exam_Score ~ Hours_Studied+Attendance+Parental_Involvement+Access_to_Resources+Extracurricular_Activities+Previous_Scores+Motivation_Level+Internet_Access+Tutoring_Sessions+Family_Income+Peer_Influence+Physical_Activity+Learning_Disabilities
 m2 <- lm(m2_formula, data=train_data)
 summary (m2)
-par(mfrow = c(2, 2)) 
 plot(m2)
+boxcox(m2)
 
+# Results from "boxcox(m2)" indicate an inverse transformation could be insightful
 
+# Model 3 (M3): Inverse Transformation of M2
+m3_formula <- (1/Exam_Score) ~ Hours_Studied+Attendance+Parental_Involvement+Access_to_Resources+Extracurricular_Activities+Previous_Scores+Motivation_Level+Internet_Access+Tutoring_Sessions+Family_Income+Peer_Influence+Physical_Activity+Learning_Disabilities
+m3 <- lm(m3_formula, data=train_data)
+summary (m3)
+plot(m3)
+boxcox(m3)
 
+# Finding Outliers and Cooks Distances
+n <- nrow(train_data)
+residuals <- rstandard(m2)
+outliers <- which(abs(residuals) > 2)
+cooks_distances <- cooks.distance(m2)
+cooks_threshold <- 4 / (n - 2)
+high_cooks <- which(cooks_distances > cooks_threshold)
+outliers
+high_cooks
 
 
 
