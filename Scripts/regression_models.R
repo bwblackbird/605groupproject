@@ -15,7 +15,6 @@ train_data <- data[train_indices, ]
 m1_formula <- Exam_Score ~ Hours_Studied+Attendance+Parental_Involvement+Access_to_Resources+Extracurricular_Activities+Sleep_Hours+Previous_Scores+Motivation_Level+Internet_Access+Tutoring_Sessions+Family_Income+Teacher_Quality+School_Type+Peer_Influence+Physical_Activity+Learning_Disabilities+Parental_Education_Level+Distance_from_Home+Gender
 m1 <- lm(m1_formula, data=train_data)
 summary (m1)
-par(mfrow = c(2, 2)) 
 plot(m1)
 
 # Calculate VIF
@@ -40,16 +39,39 @@ summary (m3)
 plot(m3)
 boxcox(m3)
 
-# Finding Outliers and Cooks Distances
+# Finding, Removing Outliers
 n <- nrow(train_data)
 residuals <- rstandard(m2)
 outliers <- which(abs(residuals) > 2)
 cooks_distances <- cooks.distance(m2)
 cooks_threshold <- 4 / (n - 2)
 high_cooks <- which(cooks_distances > cooks_threshold)
-outliers
-high_cooks
+train_data_clean <- train_data[-outliers, ]
 
+# Model 1 with cleaned data
+m1_clean <- lm(m1_formula, data=train_data_clean)
+summary(m1_clean)
+plot(m1_clean)
+
+# Stepwise Selection, Forward Selection and Backward Elimination
+null_model <- lm(train_data_clean$Exam_Score ~ 1, data=train_data_clean)
+forward_model <- step(null_model, direction = "forward", scope = ~ Hours_Studied+Attendance+Parental_Involvement+Access_to_Resources+Extracurricular_Activities+Sleep_Hours+Previous_Scores+Motivation_Level+Internet_Access+Tutoring_Sessions+Family_Income+Teacher_Quality+School_Type+Peer_Influence+Physical_Activity+Learning_Disabilities+Parental_Education_Level+Distance_from_Home+Gender, trace = 1)
+summary(forward_model)
+
+backward_model <- step(m1_clean, direction = "backward", trace = 1)
+summary(backward_model)
+
+# Results from "summary(m1_clean)" indicate only School_Type and Gender 
+#are not statistically significant at a 95% significance level.
+# Results from stepwise selection show School_Type and Gender do not
+#significantly reduce AIC.
+
+# Model 4 (M4): All variables except School_Type and Gender
+m4_formula <- Exam_Score ~ Hours_Studied+Attendance+Parental_Involvement+Access_to_Resources+Extracurricular_Activities+Sleep_Hours+Previous_Scores+Motivation_Level+Internet_Access+Tutoring_Sessions+Family_Income+Teacher_Quality+Peer_Influence+Physical_Activity+Learning_Disabilities+Parental_Education_Level+Distance_from_Home
+m4 <- lm(m4_formula, data=train_data_clean)
+summary (m4)
+plot(m4)
+boxcox(m4)
 
 
 
