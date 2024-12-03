@@ -1,8 +1,10 @@
 # regression_models.R: Regression Models for Student Exam Performance
 
 # Libraries, data
-library("car")
-library("MASS")
+library(car)
+library(MASS)
+library(lmtest)
+library(glmnet)
 data <- read.csv("Data/data.csv", header=TRUE, sep=",")
 
 # Random training sample using 80% of data
@@ -10,6 +12,7 @@ set.seed(3210)
 train_size <- floor(0.80 * nrow(data)) 
 train_indices <- sample(seq_len(nrow(data)), size = train_size)
 train_data <- data[train_indices, ]
+test_data <- data[-train_indices, ]
 
 # Model 1 (M1): Initial Model, all 19 predictor variables
 m1_formula <- Exam_Score ~ Hours_Studied+Attendance+Parental_Involvement+Access_to_Resources+Extracurricular_Activities+Sleep_Hours+Previous_Scores+Motivation_Level+Internet_Access+Tutoring_Sessions+Family_Income+Teacher_Quality+School_Type+Peer_Influence+Physical_Activity+Learning_Disabilities+Parental_Education_Level+Distance_from_Home+Gender
@@ -72,6 +75,15 @@ m4 <- lm(m4_formula, data=train_data_clean)
 summary (m4)
 plot(m4)
 boxcox(m4)
+anova(m4)
+bptest(m4)
 
+# Predictions
+t <- 78
+pred_point <- test_data[t, ]
+prediction <- predict(m4, newdata=pred_point, interval="prediction", level=0.95)
+true_exam_score <- test_data[t, "Exam_Score"]
 
+true_exam_score
+prediction
 
