@@ -14,6 +14,31 @@ summary(data$Previous_Scores)
 summary(data$Tutoring_Sessions)
 summary(data$Physical_Activity)
 
+# Exam Score Analysis
+top_20_percent_cutoff <- quantile(data$Exam_Score, 0.80)
+num_top_20_percent <- sum(data$Exam_Score >= top_20_percent_cutoff)
+percent_top_20 <- (num_top_20_percent / nrow(data)) * 100
+top_20_percent_cutoff
+percent_top_20
+top_20_data <- data %>% filter(Exam_Score >= top_20_percent_cutoff) # All samples with exam scores in top 20%
+
+top_10_percent_cutoff <- quantile(data$Exam_Score, 0.90)
+num_top_10_percent <- sum(data$Exam_Score >= top_10_percent_cutoff)
+percent_top_10 <- (num_top_10_percent / nrow(data)) * 100
+top_10_percent_cutoff
+percent_top_10
+top_10_data <- data %>% filter(Exam_Score >= top_10_percent_cutoff) # All samples with exam scores in top 10%
+
+ggplot(data, aes(x = Exam_Score)) +
+  geom_histogram(binwidth = 1, fill = "orange", color = "black") +
+  labs(title = "Distribution of Exam Scores", x = "Exam Score", y = "Count") +
+  theme_minimal() # Visualizing Distribution of Exam_Score variable
+
+ggplot(top_10_data, aes(x = Exam_Score)) +
+  geom_histogram(binwidth = 1, fill = "violet", color = "black") +
+  labs(title = "Distribution of Exam Scores", x = "Exam Score", y = "Count") +
+  theme_minimal() # Visualizing Distribution of Top 10% Scorers
+
 # Affect of Single Variables on Exam Score
 
 # Affect of Attendance on Exam_Score
