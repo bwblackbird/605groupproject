@@ -2,8 +2,10 @@
 
 # Libraries, data
 library(tidyverse)
+library(dyplr)
 library(MASS)
 data <- read.csv("Data/data.csv", header=TRUE, sep=',')
+numeric_data <- data[sapply(data, is.numeric)] # dataset w/ only numeric variables
 
 # Data Summaries
 summary(data$Exam_Score)
@@ -95,5 +97,7 @@ chisq.test(data$Access_to_Resources, data$Internet_Access)
 table(data$Family_Income, data$Parental_Education_Level)
 chisq.test(data$Family_Income, data$Parental_Education_Level)
 
+# Scatter plot Matrix
+pairs(numeric_data[, -c(3,5,6)]) #Sleep_Hours(3), Tutoring_Sessions(5), and Physical_Activity(6) excluded due to limited range of values
 
 
