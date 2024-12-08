@@ -78,10 +78,15 @@ boxcox(m4)
 anova(m4)
 bptest(m4)
 
+# Model 2 With cleaned data
+m2_clean <- lm(m2_formula, data=train_data_clean)
+summary (m2_clean)
+plot(m2_clean)
+
 # Predictions
-t <- 78
+t <- 4
 pred_point <- test_data[t, ]
-prediction <- predict(m4, newdata=pred_point, interval="prediction", level=0.95)
+prediction <- predict(m2_clean, newdata=pred_point, interval="prediction", level=0.95)
 true_exam_score <- test_data[t, "Exam_Score"]
 
 true_exam_score
