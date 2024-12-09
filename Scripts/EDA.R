@@ -61,6 +61,12 @@ ggplot(data, aes(x = Previous_Scores, y = Exam_Score)) +
   theme_minimal() +
   labs(title = "Previous Scores vs Exam Score", x = "Previous Scores", y = "Exam Score")
 
+# Affect of Sleep_Hours on Exam_Score
+ggplot(data, aes(x = Sleep_Hours, y = Exam_Score)) +
+  geom_point(color = "purple") +
+  theme_minimal() +
+  labs(title = "Sleep Hours vs Exam Score", x = "Sleep Hours", y = "Exam Score")
+
 # Affect of Access_to_Resources on Exam_Score
 ggplot(data, aes(x = Access_to_Resources, y = Exam_Score)) +
   geom_point(color = "darkred") +
@@ -69,15 +75,15 @@ ggplot(data, aes(x = Access_to_Resources, y = Exam_Score)) +
 
 # Affect of Parental_Involvement on Exam_Score
 ggplot(data, aes(x = Parental_Involvement, y = Exam_Score)) +
-  geom_point(color = "darkviolet") +
+  geom_point(color = "magenta") +
   theme_minimal() +
   labs(title = "Parental Involvement vs Exam Score", x = "Parental Involvement", y = "Exam Score")
 
-# Affect of Motivation_Level on Exam_Score
-ggplot(data, aes(x = Motivation_Level, y = Exam_Score)) +
+# Affect of Tutoring_Sessions on Exam_Score
+ggplot(data, aes(x = Tutoring_Sessions, y = Exam_Score)) +
   geom_point(color = "darkorange") +
   theme_minimal() +
-  labs(title = "Motivation Level vs Exam Score", x = "Motivation Level", y = "Exam Score")
+  labs(title = "Tutoring Sessions vs Exam Score", x = "Tutoring Sessions", y = "Exam Score")
 
 # Checking correlation between variables
 
