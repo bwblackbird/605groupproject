@@ -24,22 +24,22 @@ top_20_percent_cutoff
 percent_top_20
 top_20_data <- data %>% filter(Exam_Score >= top_20_percent_cutoff) # All samples with exam scores in top 20%
 
-top_10_percent_cutoff <- quantile(data$Exam_Score, 0.90)
-num_top_10_percent <- sum(data$Exam_Score >= top_10_percent_cutoff)
-percent_top_10 <- (num_top_10_percent / nrow(data)) * 100
-top_10_percent_cutoff
-percent_top_10
-top_10_data <- data %>% filter(Exam_Score >= top_10_percent_cutoff) # All samples with exam scores in top 10%
+top_1_percent_cutoff <- quantile(data$Exam_Score, 0.99)
+num_top_1_percent <- sum(data$Exam_Score >= top_5_percent_cutoff)
+percent_top_1 <- (num_top_10_percent / nrow(data)) * 100
+top_1_percent_cutoff
+percent_top_1
+top_1_data <- data %>% filter(Exam_Score >= top_1_percent_cutoff) # All samples with exam scores in top 1%
 
 ggplot(data, aes(x = Exam_Score)) +
   geom_histogram(binwidth = 1, fill = "orange", color = "black") +
   labs(title = "Distribution of Exam Scores", x = "Exam Score", y = "Count") +
   theme_minimal() # Visualizing Distribution of Exam_Score variable
 
-ggplot(top_10_data, aes(x = Exam_Score)) +
+ggplot(top_1_data, aes(x = Exam_Score)) +
   geom_histogram(binwidth = 1, fill = "violet", color = "black") +
-  labs(title = "Distribution of Exam Scores", x = "Exam Score", y = "Count") +
-  theme_minimal() # Visualizing Distribution of Top 10% Scorers
+  labs(title = "Distribution of Top 1% Scorers", x = "Exam Score", y = "Count") +
+  theme_minimal() # Visualizing Distribution of Top 1% Scorers
 
 # Affect of Single Variables on Exam Score
 
@@ -98,6 +98,5 @@ table(data$Family_Income, data$Parental_Education_Level)
 chisq.test(data$Family_Income, data$Parental_Education_Level)
 
 # Scatter plot Matrix
-pairs(numeric_data[, -c(3,5,6)]) #Sleep_Hours(3), Tutoring_Sessions(5), and Physical_Activity(6) excluded due to limited range of values
-
+pairs(numeric_data[, -c(3,5,6)], main = "Scatter Plot Matrix") #Sleep_Hours(3), Tutoring_Sessions(5), and Physical_Activity(6) excluded due to limited range of values
 
