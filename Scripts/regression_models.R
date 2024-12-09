@@ -18,6 +18,7 @@ test_data <- data[-train_indices, ]
 m1_formula <- Exam_Score ~ Hours_Studied+Attendance+Parental_Involvement+Access_to_Resources+Extracurricular_Activities+Sleep_Hours+Previous_Scores+Motivation_Level+Internet_Access+Tutoring_Sessions+Family_Income+Teacher_Quality+School_Type+Peer_Influence+Physical_Activity+Learning_Disabilities+Parental_Education_Level+Distance_from_Home+Gender
 m1 <- lm(m1_formula, data=train_data)
 summary (m1)
+par(mfrow=c(2,2))
 plot(m1)
 
 # Calculate VIF
@@ -83,8 +84,14 @@ m2_clean <- lm(m2_formula, data=train_data_clean)
 summary (m2_clean)
 plot(m2_clean)
 
+# Model 5 (M5): Top 6 Most Influential Factors 
+m5_formula <- Exam_Score ~ Hours_Studied+Attendance+Parental_Involvement+Access_to_Resources+Previous_Scores+Tutoring_Sessions
+m5 <- lm(m5_formula, data=train_data_clean)
+summary (m5)
+plot(m5)
+
 # Predictions
-t <- 4
+t <- 18
 pred_point <- test_data[t, ]
 prediction <- predict(m2_clean, newdata=pred_point, interval="prediction", level=0.95)
 true_exam_score <- test_data[t, "Exam_Score"]
