@@ -91,11 +91,12 @@ summary (m5)
 plot(m5)
 
 # Predictions
-t <- 18
+t <- 78
 pred_point <- test_data[t, ]
-prediction <- predict(m2_clean, newdata=pred_point, interval="prediction", level=0.95)
+prediction <- predict(m5, newdata=pred_point, interval="prediction", level=0.95)
 true_exam_score <- test_data[t, "Exam_Score"]
+rmse <- sqrt(mean((true_exam_score - prediction)^2))
 
 true_exam_score
 prediction
-
+rmse
